@@ -1,0 +1,53 @@
+{
+    "description": "Green embedded Linux reference on qemuarm, release 6.0 'wrynose'",
+    "sources": {
+        "bitbake": {
+            "git-remote": {
+                "uri": "https://git.openembedded.org/bitbake",
+                "branch": "2.18",
+                "rev": "6e260eb6ab1631607ea414d9ff8ede1155faa5d9"
+            }
+        },
+        "openembedded-core": {
+            "git-remote": {
+                "uri": "https://git.openembedded.org/openembedded-core",
+                "branch": "wrynose",
+                "rev": "ae5a301091f5b0574ea7444aab40b309b6d9f3f2"
+            }
+        },
+        "meta-yocto": {
+            "git-remote": {
+                "uri": "https://git.yoctoproject.org/meta-yocto",
+                "branch": "wrynose",
+                "rev": "79b6d87030178bed0088ad3b00aa6dfbabac37c4"
+            }
+        },
+        "sw4green_electronics": {
+            "git-remote": {
+                "uri": "https://github.com/lenkakt/sw4green_electronics",
+                "branch": "main",
+                "rev": "main"
+            }
+        }
+    },
+    "bitbake-setup": {
+        "configurations": [
+            {
+                "name": "green",
+                "description": "Green distribution on qemuarm",
+                "bb-layers": [
+                    "openembedded-core/meta",
+                    "meta-yocto/meta-poky",
+                    "sw4green_electronics/demos/yocto/meta-green",
+                    "sw4green_electronics/demos/yocto/meta-green-demo"
+                ],
+                "oe-fragments": [
+                    "machine/qemuarm",
+                    "distro/green",
+                    "core/yocto/root-login-with-empty-password"
+                ]
+            }
+        ]
+    },
+    "version": "1.0"
+}
