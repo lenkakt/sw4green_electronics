@@ -1,11 +1,21 @@
 # sw4green_electronics
-TLDR: A set of checklists and demo implementations for embedded demonstrating how to code for reducing e-weaste production. Created within european research project EECONE (https://eecone.com)
 
+TLDR: A set of checklists and demo implementations for embedded software, showing how to code to reduce e-waste. Created within the European research project [EECONE](https://eecone.com).
 
-The repository structure is as follows:
+## Contents
 
-* checklists: "Green" checklists for embedded software helping you understand if your SW implements all the "anti e-waste" principles.
-* demos: Demo applications for Zephyr and Yocto, demonstrating applying those principles to real applications.
-* docs: Detailed set of documentations, research outcomes, publications and presentations.
+* [Online training](https://elearning.tul.cz/course/view.php?id=18416): the course on the TUL e-learning platform.
+* [docs](docs/main_text.md): the main text.
+* checklists: "green" checklists that help you find out if your software follows the "anti e-waste" principles.
+  * [Main checklist](checklists/main_checklist.md)
+  * [Zephyr checklist](checklists/zephyr_checklist.md)
+  * [Yocto Project/OpenEmbedded checklist](checklists/yocto_checklist.md)
+* demos: reference applications for checking the principles in practice.
+  * [Greenhouse controller for Zephyr](demos/zephyr/greenhouse/README.md) (design sketch)
+  * [meta-green layer for Yocto Project/OpenEmbedded on qemuarm](demos/yocto/README.md)
 
-  Contact: Lenka Kosková Třísková, lenka.koskova.triskova@tul.cz
+## License
+
+[Apache License 2.0](LICENSE).
+
+Contact: Lenka Kosková Třísková, lenka.koskova.triskova@tul.cz
