@@ -1,0 +1,11 @@
+description: Analog capacitive soil moisture sensor with switched power
+
+compatible: "greenhouse,soil-sensor"
+
+properties:
+  io-channels:
+    type: phandle-array
+    required: true
+  power-gpios:
+    type: phandle-array
+    required: true

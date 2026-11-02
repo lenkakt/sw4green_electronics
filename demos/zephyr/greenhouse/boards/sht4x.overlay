@@ -1,0 +1,18 @@
+/* Replacement for the BME280: use with -DEXTRA_DTC_OVERLAY_FILE=boards/sht4x.overlay
+ * and CONFIG_SHT4X=y. No change to the application.
+ */
+/delete-node/ &bme280;
+
+/ {
+	aliases {
+		env-sensor = &sht4x;
+	};
+};
+
+&xiao_i2c {
+	sht4x: sht4x@44 {
+		compatible = "sensirion,sht4x";
+		reg = <0x44>;
+		repeatability = <2>;
+	};
+};

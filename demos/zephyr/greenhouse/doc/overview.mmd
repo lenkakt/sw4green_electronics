@@ -1,0 +1,16 @@
+flowchart LR
+  subgraph node["Main node (Zephyr)"]
+    S[Sensor] -->|sensor_data_chan| C[Control]
+    C -->|actuator_cmd_chan| A[Actuator]
+    A -->|actuator_state_chan| B[Backend]
+    S -->|sensor_data_chan| B
+    W[Wi-Fi] -.status.-> B
+    U[Update]
+  end
+  T[Temperature and humidity] --> S
+  L[Light] --> S
+  M[Soil moisture] --> S
+  A --> V[Watering valve]
+  A --> F[Ventilation fan]
+  B -->|HTTP, line protocol| I[(InfluxDB)]
+  I --> G[Grafana]

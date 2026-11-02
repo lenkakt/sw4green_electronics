@@ -1,0 +1,141 @@
+mainmenu "Greenhouse controller"
+
+menu "Greenhouse"
+
+config APP_DEVICE_ID
+	string "Default device ID"
+	default "0001"
+
+config APP_SENSOR_SIMULATE
+	bool "Simulated sensors"
+
+config APP_ACTUATOR_SIMULATE
+	bool "Simulated actuators"
+	help
+	  Actuators only log their state.
+
+config APP_SENSOR_SAMPLE_INTERVAL_S
+	int "Sensor sample interval in seconds"
+	default 60
+
+config APP_SENSOR_SIM_DAY_S
+	int "Length of a simulated day in seconds"
+	depends on APP_SENSOR_SIMULATE
+	default 600
+
+config APP_SOIL_DRY_MV
+	int "Soil sensor output in dry soil (mV)"
+	default 2600
+
+config APP_SOIL_WET_MV
+	int "Soil sensor output in water (mV)"
+	default 1200
+
+config APP_CTRL_VENT_ON_TEMP_DC
+	int "Ventilation on above this temperature (0.1 C)"
+	default 300
+
+config APP_CTRL_VENT_OFF_TEMP_DC
+	int "Ventilation off below this temperature (0.1 C)"
+	default 260
+
+config APP_CTRL_VENT_ON_HUM_DPCT
+	int "Ventilation on above this air humidity (0.1 %)"
+	default 850
+
+config APP_CTRL_VENT_OFF_HUM_DPCT
+	int "Ventilation off below this air humidity (0.1 %)"
+	default 700
+
+config APP_CTRL_WATER_ON_SOIL_DPCT
+	int "Watering on below this soil moisture (0.1 %)"
+	default 350
+
+config APP_CTRL_WATER_OFF_SOIL_DPCT
+	int "Watering off above this soil moisture (0.1 %)"
+	default 550
+
+config APP_CTRL_WATER_MAX_LIGHT_LUX
+	int "No new watering above this light level (lux)"
+	default 30000
+
+config APP_CTRL_WATER_MAX_RUN_S
+	int "Longest watering run in seconds"
+	default 120
+
+config APP_CTRL_WATER_MIN_PAUSE_S
+	int "Shortest pause between watering runs in seconds"
+	default 600
+
+config APP_BACKEND_HOST
+	string "InfluxDB host"
+	default ""
+
+config APP_BACKEND_PORT
+	int "InfluxDB port"
+	default 8086
+
+config APP_BACKEND_ORG
+	string "InfluxDB organisation"
+	default "greenhouse"
+
+config APP_BACKEND_BUCKET
+	string "InfluxDB bucket"
+	default "greenhouse"
+
+config APP_BACKEND_DEV_TOKEN
+	string "Default InfluxDB token, for the local test stack only"
+	default ""
+
+config APP_BACKEND_UPLOAD_INTERVAL_S
+	int "Upload interval in seconds, 0 uploads every point"
+	default 0
+
+config APP_BACKEND_QUEUE_SIZE
+	int "Points kept while the network is down"
+	default 64
+
+config APP_BACKEND_NTP_SERVER
+	string "NTP server"
+	default "pool.ntp.org"
+
+config APP_WATCHDOG_STALE_S
+	int "A thread is hung after this many seconds without a heartbeat"
+	default 120
+
+config APP_LED
+	bool "Status LED"
+	default y
+
+config APP_UPDATE_CONFIRM_S
+	int "Seconds of good health before confirming a new image"
+	default 120
+
+module = APP_MAIN
+module-str = main
+source "subsys/logging/Kconfig.template.log_config"
+module = APP_SENSOR
+module-str = sensor
+source "subsys/logging/Kconfig.template.log_config"
+module = APP_CONTROL
+module-str = control
+source "subsys/logging/Kconfig.template.log_config"
+module = APP_ACTUATOR
+module-str = actuator
+source "subsys/logging/Kconfig.template.log_config"
+module = APP_BACKEND
+module-str = backend
+source "subsys/logging/Kconfig.template.log_config"
+module = APP_NET
+module-str = network
+source "subsys/logging/Kconfig.template.log_config"
+module = APP_WATCHDOG
+module-str = watchdog
+source "subsys/logging/Kconfig.template.log_config"
+module = APP_UPDATE
+module-str = update
+source "subsys/logging/Kconfig.template.log_config"
+
+endmenu
+
+source "Kconfig.zephyr"

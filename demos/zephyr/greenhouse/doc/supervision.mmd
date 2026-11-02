@@ -1,0 +1,19 @@
+flowchart TB
+  modules(All threads: sensor, control, actuator, backend, net, led, update)
+  table[app_status table in main.c]
+  status[/app_status_chan/]
+  led(led_tid)
+  update(update_tid)
+  watchdog(watchdog_tid)
+  hw[Hardware watchdog]
+  backend(backend_tid)
+  mcuboot[MCUboot image confirmed]
+
+  modules -->|app_status_set| table
+  table -->|on change| status
+  status --> led
+  table -->|any error?| update
+  update -->|after 2 min healthy| mcuboot
+  table -->|network up?| backend
+  modules -->|heartbeat| watchdog
+  watchdog -->|feeds while all alive| hw

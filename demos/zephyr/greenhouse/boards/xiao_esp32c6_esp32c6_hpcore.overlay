@@ -1,0 +1,86 @@
+/delete-node/ &storage_partition;
+
+/ {
+	aliases {
+		env-sensor = &bme280;
+		light-sensor = &bh1750;
+		soil-sensor = &soil_sensor;
+		water-valve = &water_valve;
+		vent-fan = &vent_fan;
+	};
+
+	soil_sensor: soil-sensor {
+		compatible = "greenhouse,soil-sensor";
+		io-channels = <&adc0 0>;
+		power-gpios = <&xiao_d 3 GPIO_ACTIVE_HIGH>;
+	};
+
+	fstab {
+		compatible = "zephyr,fstab";
+
+		logs: logs {
+			compatible = "zephyr,fstab,littlefs";
+			mount-point = "/lfs1";
+			partition = <&logs_partition>;
+			automount;
+			read-size = <16>;
+			prog-size = <16>;
+			cache-size = <64>;
+			lookahead-size = <32>;
+			block-cycles = <512>;
+		};
+	};
+
+	relays {
+		compatible = "gpio-leds";
+
+		water_valve: water-valve {
+			gpios = <&xiao_d 8 GPIO_ACTIVE_HIGH>;
+		};
+
+		vent_fan: vent-fan {
+			gpios = <&xiao_d 9 GPIO_ACTIVE_HIGH>;
+		};
+	};
+};
+
+&xiao_i2c {
+	bme280: bme280@76 {
+		compatible = "bosch,bme280";
+		reg = <0x76>;
+	};
+
+	bh1750: bh1750@23 {
+		compatible = "rohm,bh1750";
+		reg = <0x23>;
+	};
+};
+
+&adc0 {
+	status = "okay";
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+	/* D0 */
+	channel@0 {
+		reg = <0>;
+		zephyr,gain = "ADC_GAIN_1_4";
+		zephyr,reference = "ADC_REF_INTERNAL";
+		zephyr,acquisition-time = <ADC_ACQ_TIME_DEFAULT>;
+		zephyr,resolution = <12>;
+	};
+};
+
+&flash0 {
+	partitions {
+		storage_partition: partition@3b0000 {
+			label = "storage";
+			reg = <0x3b0000 DT_SIZE_K(64)>;
+		};
+
+		logs_partition: partition@3c0000 {
+			label = "logs";
+			reg = <0x3c0000 DT_SIZE_K(128)>;
+		};
+	};
+};

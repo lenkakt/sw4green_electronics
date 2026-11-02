@@ -1,0 +1,34 @@
+flowchart LR
+  env[BME280]
+  light[BH1750]
+  soil[Soil sensor]
+  valve[Watering valve]
+  fan[Ventilation fan]
+  influx[(InfluxDB and Grafana)]
+  net[Wi-Fi or Ethernet driver]
+
+  sensor(sensor_tid)
+  control(control_tid)
+  actuator(actuator_tid)
+  backend(backend_tid)
+  net_t(net_tid)
+
+  data[/sensor_data_chan/]
+  cmd[/actuator_cmd_chan/]
+  state[/actuator_state_chan/]
+
+  env --> sensor
+  light --> sensor
+  soil --> sensor
+  sensor --> data
+  data --> control
+  data --> backend
+  control --> cmd
+  cmd --> actuator
+  actuator --> valve
+  actuator --> fan
+  actuator --> state
+  state --> backend
+  backend -->|HTTP| influx
+  net_t -->|connects| net
+  backend -.->|uses| net
